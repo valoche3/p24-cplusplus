@@ -36,19 +36,7 @@ Rational operator+(const Rational& r1, const Rational& r2) //on utilise les adre
         return Rational(num, den);
     }
 
-// int main() {
-// int i = 12;
-// float pi = 3.14159;
-// Rational r1;
-// Rational r2(1);
-// Rational r3(1, 2);
-// r1.print();
-// r2.print();
-// r3.print()
-// Rational eval(3, 4);
-//}
-
-std::ostream &operator<<(std::ostream &os, const Rational &r)
+std::ostream &operator<<(std::ostream &os, const Rational &r) //on redéfinit l'opérateur << pour des rationnels (que pour des int, des float et des str à la base)
 {
     os << r.num << '/' << r.denom;
     return os;
