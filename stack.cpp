@@ -104,6 +104,19 @@ public:
     }
 };
 
+class IntStack2
+{
+private:
+    int nb;
+    int size;
+    int tab
+
+public: 
+    IntStack2(int s) : nb(0), size(s)
+    {
+    }
+}
+
 // 1. réaliser le code pour faire fonctionner cette pile d'entier de taille fixée à la compilation
 // 2. quelles sont les méthodes qui ne modifient pas l'objet sur lequel elles sont appelées
 //    faites en sorte qu'elles puissent être appelées sur un objet constant
@@ -111,7 +124,8 @@ public:
 //    std::cout << s1;
 //    il faut redéfinir l'operator<< en appelant la méthode print
 
-int main()
+int
+main()
 {
     IntStack s1;
     s1.print(); // affichera [[
