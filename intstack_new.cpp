@@ -149,8 +149,4 @@ int main()
     IntStack j(i);
     j=i;
     j.operator=(i);
-    CONSTRUCTEUR
-    CONSTRUCTEUR DE copie
-    OPÉRATEUR ÉGAL
-    continuer le snake
 }
