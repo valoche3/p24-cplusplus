@@ -112,10 +112,50 @@
 #include <string>
 #include <cstdlib> // pour exit et rand
 
-void reset_board() {}        // qui ré-initialise le board
-void generate_apple() {}     // qui génère une pomme
-void add_snake_to_board() {} // qui met le serpent sur le board
-void add_apple_to_board() {} // qui met la pomme sur le board
+struct Position
+{
+    int x;
+    int y;
+};
+
+int rows = 5;
+int columns = 7;
+std::vector<char> tab(rows *columns, '.'); // pour afficher des caractères, vecteur de caractères
+
+std::vector<std::pair<int, int> > snake; // mettre la liste des paires à avoir
+
+void init_snake()
+{
+    snake.push_back(std::pair<int, int>(2, 3));
+    snake.push_back(std::pair<int, int>(2, 4));
+    snake.push_back(std::pair<int, int>(2, 5));
+}
+
+void reset_board() // qui ré-initialise le board
+{
+    for (int i = 0; i < tab.size(); i++)
+    {
+        tab[i] = '.';
+    }
+}
+
+void generate_apple() // qui génère une pomme
+{
+}
+
+void add_snake_to_board() // qui met le serpent sur le board
+{
+    tab[snake[0].first * columns + snake[0].second] = 'O'; // mettre le snake sur le board
+    for (int i = 1; i < snake.size(); i++)
+    {
+        tab[snake[i].first * columns + snake[i].second] = 'o'; // parce qu'on est en 1D
+    }
+}
+
+void add_apple_to_board() // qui met la pomme sur le board
+{
+    tab[3 * columns + 4] = '@';
+}
 
 void draw_board()
 { // qui affiche le board
@@ -127,11 +167,12 @@ void draw_board()
     {
         for (int j = 0; j < 7; j++)
         {
-            std::cout << ".";
+            std::cout << tab[i * columns + j];
         }
         std::cout << std::endl;
     }
 }
+
 void print_message(const std::string &msg) // qui affiche un message
 {                                          // const (pour ne pas modifier le message dans la fonction)
                                            // &     (pour ne pas le recopier on le passe par référence)
@@ -165,16 +206,28 @@ void play_game()
         {
             if ((key == 'i') or (key == 'k') or (key == 'j') or (key == 'l'))
             {
-                // on sait calculer la case dans laquelle la tête du serpent doit aller
-                //    si il y a une pomme dans cette case: il la mange et il grandit
-                //    si il se mange lui-même ou sort du board: on quitte le jeu
-                //    sinon on déplace le serpent
-                // et on recommence la boucle sans fin
+                if (key == 'i') // en haut
+                {
+                    snake[0].first = snake[0].first - 1;
+                }
+                else if (key == 'j') // à gauche
+                {
+                    snake[0].second = snake[0].second - 1;
+                }
+                else if (key == 'k') // en bas
+                {
+                    snake[0].first = snake[0].first + 1;
+                }
+                else if (key == 'l') // à droite
+                {
+                    snake[0].second = snake[0].second + 1;
+                }
             }
+            // faire suivre tout le corps
             else if (key == 'q')
             {
                 print_message("bye bye !\n");
-                exit(0); // l'utilisateur demande à quitter le jeu
+                return; // l'utilisateur demande à quitter le jeu
             }
             // sinon une clé inconnue a été entrée: on ne fait rien...
 
@@ -192,6 +245,7 @@ int simple_random(int n) // simple random generation of a integer between 0 and 
 
 int main(int argc, char **argv)
 {
+    init_snake();
     // exemple où on génère un nombre aléatoire entre 0 et 35
     // (par exemple cela vous donne une case sur un board de 5 lignes 7 colonnes pour y placer une pomme
     //  si il n'y a pas de bout de serpent à cet endroit...)
@@ -207,3 +261,21 @@ int main(int argc, char **argv)
 
 // Si vous avez bien avancé, écrivez moi afin que je vous donne le code où le serpent bouge tout-seul dans une direction donnée.
 // Et vous changez la direction du serpent uniquement quand c'est utile.
+
+// voici un exemple de comment faire le board et le snake avec un std::vector
+
+// int main_OLD()
+//{
+//  là on le parcourt pour l'afficher le board avec son snake et sa pomme
+// for (int r = 0; r < rows; r++)
+//{
+// for (int c = 0; c < columns; c++)
+//{
+//  on doit passer d'une indexation 2D à une indexation 1D
+// std::cout << tab[r * columns + c];
+//}
+// std::cout << std::endl;
+//}
+// mais tout ça doit être organisé dans des classes et des méthodes dans ces classes
+// return 0;
+//}
